@@ -1,0 +1,249 @@
+/******************************************
+*******          MAIN             *********
+******************************************/
+
+#main {
+	height: 750px;
+	width: 800px;
+}
+
+#tituloDivs {
+	text-align: center;
+	color: white;
+	font-size: 20px;
+}
+
+#divIzquierdo {
+	height: 644px;
+	width: 500px;
+	float: left;
+}
+
+#divDerecho {
+	height: 626px;
+	width: 380px;
+	float: right;
+	margin: auto;
+	margin-top: 10px;
+	background-color: #0a2735;
+	border: #474747 solid 3px;
+	text-align: center;
+}
+
+#divIzqSup {
+	height: 240px;
+	width: 100%;
+}
+
+#divIzqSupDer {
+	height: 100%;
+	width: 40%;
+	float: right;
+}
+
+#divIzqSupIzq {
+	height: 100%;
+	width: 60%;
+	float: left;
+}
+
+#panelInfo{
+	position: absolute;
+	width: 350px;
+    height: 130px;
+    background-color: #0a2735;
+	border: 3px solid #474747;
+}
+.descripcion{
+	display:none;
+}
+
+.descripcion p{
+	color:white;
+	font-size: 12px;
+	line-height: 70%;
+}
+
+#divTabla{
+	height: 100%;
+	width: 60%;
+	float:right;
+}
+
+#statsEquipo{
+	color: white;
+	float: right;
+	width: 100%;
+	height: 80%;
+}
+
+#statsEquipo caption{
+	font-weight: bold;
+}
+
+#statsEquipo td{
+	width: 50%;
+	height: 50%;
+	text-align: left;
+}
+
+#foto img{
+	float:left;
+	width: 130px;
+	height: 130px;
+}
+
+#combateAmigo, #combateRandom{
+	height: 90%;
+	width: 90%;
+	margin: auto;
+	margin-top: 10px;
+	background-color: #0a2735;
+	border: #474747 solid 3px;
+	text-align: center;
+}
+
+#divIzqInf {
+	height: 440px;
+	width: 100%;
+	margin-left: 2px;
+}
+
+#divPerfil{
+	height: 90%;
+	width: 95%;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #0a2735;
+	border: #474747 solid 3px;
+	text-align: center;
+}
+
+#statsYimagen{
+	float: left;
+	height: 95%;
+	width: 50%;
+	margin-top: 10px;
+}
+
+#stats {
+	height: 50%;
+	width: 80%;
+	margin: auto;
+	text-align: center;
+}
+
+#stats table {
+	width: 100%;
+	height: 80%;
+}
+
+#stats caption {
+	font-size: 20px;
+	font-weight: bold;
+	color: white;
+	text-decoration: underline;
+}
+
+#stats table td {
+	color: white;
+}
+
+#imagen {
+	height: 50%;
+	width: 80%;
+	margin: auto;
+}
+
+#imagen img {
+	width: 100%;
+	height: 100%;
+}
+#textoLobby{
+	color: white;
+	align: justify;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+#equipoHeroe {
+	width: 40%;
+	height: 50%;
+	float: right;
+	margin-top: 10px;
+}
+
+#equipo {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#equipo table {
+    margin-left: auto;
+    margin-right: auto;
+	font-size: 20px;
+    border-spacing: 5px;
+	height: 85%;
+	background-color: #0a2735;
+	empty-cells: hide;
+}
+
+#equipo caption {
+	font-size: 20px;
+	font-weight: bold;
+	color: white;
+	text-decoration: underline;
+}
+
+#equipo td {
+    border: 5px grey inset;
+	background-color: #474747;
+	height: 36px;
+	width: 36px;
+}
+
+#imagenObjeto {
+	height: 36px;
+	width: 36px;
+}
+
+#imagenObjeto img {
+	height: 100%;
+	width: 100%;
+}
+
+#nombreHeroe{
+	color: white;
+	font-size: 40px;
+	margin-right: 20px;
+	margin-left: -70px;
+	margin-top: 70px;
+}
+
+#divDerecho table {
+	width: 85%;
+	margin: auto;
+	margin-top: 15px;
+	color: white;
+}
+
+#divDerecho th {
+	font-size: 25px;
+	color: white;
+	text-decoration: underline;
+}
+
+#divDerecho caption {
+	font-size: 30px;
+	font-weight: bold;
+	color: white;
+	text-decoration: underline;
+}
+
+#divDerecho button {
+	margin-top: 20px;
+}
+
+#excepciones{
+	color: red;
+}

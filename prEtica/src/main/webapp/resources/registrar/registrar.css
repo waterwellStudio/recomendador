@@ -1,0 +1,129 @@
+*{
+	margin: 0px;
+	padding: 0px;
+}
+
+body {
+	padding-top: 20px;
+	background: url('images/background.png') #2f2e2e repeat-x 0px 0px;
+	background-size: 100%;
+	color: #aca9a9;
+	font-family: verdana, arial, sans-serif;
+	font-size: 10px;
+	letter-spacing: 1px;
+}
+
+#page_forms {
+	text-align: center;
+	position: relative;
+	width: 410px;
+	height: 500px;
+	left: 400px;
+	opacity: 0.9;
+}
+
+#userlogin {
+	border: 5px solid black;
+	border-style: solid;
+	height: 105%;
+	width: 100%;
+	margin-top: 38px;
+	overflow: hidden;
+	background: #4b1a04;
+}
+
+#userlogin form h3 {
+	padding: 10px 12px 0px;
+}
+
+#page_menu {
+	width: 100%;
+	background-color: #4c0000 ;
+	color: #fff08c;
+	text-align: center;
+	font-size: 40px;
+	height: 60px;
+}
+
+#userlogin_links {
+	width: 100%;
+	height:440px; 
+}
+
+#userlogin_links h1,h3{
+	color:#fff08c;
+}
+
+#userlogin input {
+	margin-right: 20px;
+	width: 150px;
+	float: right;
+	clear: right;
+	color: #fff08c;
+	background-color: #4b0e07;
+	font-family: tahoma, arial, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+#field_username, #field_password {
+	display: block;
+	clear: both;
+}
+
+#panelForm {
+	width: 100%;
+	height: 125px;
+}
+
+#imagenesHeroe {
+	width: 100%;
+	height: 160px;
+	margin-top: 15px;
+}
+
+.imgizq {
+	height: 80px;
+    float: left;
+    width: 80px;
+    cursor: pointer;
+}
+
+.imgder {
+	height: 80px;
+    float: right;
+    width: 80px;
+    cursor: pointer;
+}
+.imgcent {
+	height: 150px;
+	width: 150px;
+    display:inline-block;
+}
+
+.foto{
+	height: 100%;
+	width: 100%;
+}
+
+.flecha{
+	font-size:50px;
+	
+}
+
+#reg_button {
+	margin-top: 30px;
+}
+
+#registrar{
+	height: 50px;
+}
+
+
+#excepciones{
+	margin: auto;
+	color: red;
+	height: 20px;
+	width: 90%;
+	font-size: 20px;
+}

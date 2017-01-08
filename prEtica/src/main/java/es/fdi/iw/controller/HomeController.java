@@ -1,6 +1,11 @@
 package es.fdi.iw.controller;
 
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -19,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
+import es.fdi.iw.model.Formulario;
 import es.fdi.iw.model.User;
 
 
@@ -34,8 +39,12 @@ public class HomeController {
 	private EntityManager entityManager;
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-
-
+	
+	private static final int numRespuestas = 11;
+	private static final int numPreguntas = 6;
+	
+	
+	
 	/**************************** LOGIN Y REGISTRO ******************************/
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -157,7 +166,8 @@ public class HomeController {
 		model.addAttribute("registrerError", "¡La contraseña no es la misma en los dos campos!");
 		return "registrar";
 	}
-
+	
+	
 	/**
 	 * Logout (also returns to home view).
 	 */
@@ -206,4 +216,142 @@ public class HomeController {
 		Object t=session.getAttribute("csrf_token");
 		return (t != null) && t.equals(token);
 	}
+	
+	
+	
+	
+	
+	/**************************** RECOMENDADOR ******************************/
+	
+	
+	/**
+	 * (SIN ACABAR)
+	 * esta funcion hay que rellenarla con las respuestas del formulario
+	 * que el usuario rellena para darnos su opinion
+	 * @param param1
+	 * @param param2
+	 * @param param3
+	 * @param param4
+	 * @param param5
+	 * @param param6
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = "/recomendador", method = RequestMethod.POST)
+	@Transactional
+	public String recomendador(
+			@RequestParam("grado") String param1,
+			@RequestParam("itirenario") String param2,
+			@RequestParam("asig1") String param3,
+			@RequestParam("asig1-2") String param4,
+			@RequestParam("asig2") String param5,
+			@RequestParam("asig2-1") String param6,
+			HttpServletRequest request, HttpServletResponse response, 
+			Model model, HttpSession session) {
+			
+		double respuestas[] = new double[numPreguntas];
+		String[] resp = {param1,param2,param3,param4,param5,param6};
+		for(int i = 0; i < numPreguntas;i++){
+			respuestas[i] = Double.parseDouble(resp[i]);
+		}
+		Formulario form = new Formulario (respuestas,numPreguntas);
+		return "home";
+	}
+
+	@RequestMapping(value = "/recomendador", method = RequestMethod.GET)
+	public String recomendador(Model model) {
+		return "recomendador";
+	}
+
+	@RequestMapping(value = "/resultados", method = RequestMethod.GET)
+	public String resultados(Model model) {
+		return "resultados";
+	}
+	
+	
+	/**************************** DANOS TU OPINION ******************************/
+	
+	
+	
+	/**
+	 * (SIN ACABAR)
+	 * esta funcion hay que rellenarla con las respuestas del formulario
+	 * que el usuario rellena para darnos su opinion
+	 * @param param1
+	 * @param param2
+	 * @param param3
+	 * @param param4
+	 * @param param5
+	 * @param param6
+	 * @param param7
+	 * @param param8
+	 * @param param9
+	 * @param param10
+	 * @param param11
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @param session
+	 * @return
+	 * @throws IOException 
+	 */
+	@RequestMapping(value = "/danostuopinion", method = RequestMethod.POST)
+	@Transactional
+	public String danostuopinion(
+			@RequestParam("grado") String param1,
+			@RequestParam("itirenario") String param2,
+			@RequestParam("asig1") String param3,
+			@RequestParam("asig1-2") String param4,
+			@RequestParam("asig2") String param5,
+			@RequestParam("asig2-1") String param6,
+			@RequestParam("op1") String param7,
+			@RequestParam("op2") String param8,
+			@RequestParam("op3") String param9,
+			@RequestParam("op4") String param10,
+			@RequestParam("op5") String param11,
+			HttpServletRequest request, HttpServletResponse response, 
+			Model model, HttpSession session) throws IOException {
+			
+		double respuestas[] = new double[numRespuestas];
+		String[] resp = {param1,param2,param3,param4,param5,param6,param7,param8,param9,param10,param11};
+		for(int i = 0; i < numRespuestas;i++){
+			respuestas[i] = Double.parseDouble(resp[i]);
+		}
+		Formulario form = new Formulario (respuestas,numRespuestas);
+		File f = new File("datos.txt");
+		FileWriter w = new FileWriter(f,true);
+		w.write(form.toARPFline() + "\r\n");
+		w.close();
+		return "home";
+	}
+	
+	
+	@RequestMapping(value = "/danostuopinion", method = RequestMethod.GET)
+	public String danostuopinion(Model model) {
+		return "danostuopinion";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

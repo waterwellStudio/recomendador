@@ -1,13 +1,17 @@
 package es.fdi.iw.controller;
 
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -24,8 +28,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import es.fdi.iw.model.DecisionTree;
 import es.fdi.iw.model.Formulario;
 import es.fdi.iw.model.User;
+import weka.classifiers.trees.J48;
+import weka.core.Instance;
 
 
 /**
@@ -40,10 +47,9 @@ public class HomeController {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	private static final int numRespuestas = 11;
+	private static final int numRespuestas = 7;
 	private static final int numPreguntas = 6;
-	
-	
+	public static final int numFormularios = 5;
 	
 	/**************************** LOGIN Y REGISTRO ******************************/
 
@@ -246,18 +252,26 @@ public class HomeController {
 			@RequestParam("grado") String param1,
 			@RequestParam("itirenario") String param2,
 			@RequestParam("asig1") String param3,
-			@RequestParam("asig1-2") String param4,
+			@RequestParam("asig12") String param4,
 			@RequestParam("asig2") String param5,
-			@RequestParam("asig2-1") String param6,
+			@RequestParam("asig22") String param6,
 			HttpServletRequest request, HttpServletResponse response, 
 			Model model, HttpSession session) {
 			
+		DecisionTree t = new DecisionTree(leerArchivo());
 		double respuestas[] = new double[numPreguntas];
 		String[] resp = {param1,param2,param3,param4,param5,param6};
 		for(int i = 0; i < numPreguntas;i++){
 			respuestas[i] = Double.parseDouble(resp[i]);
 		}
 		Formulario form = new Formulario (respuestas,numPreguntas);
+		Instance in = form.toInstance(leerArchivo());
+		double resultado[]=t.getDistribution(in);
+		//model.addAttribute("resultado", resultado);
+		if(resultado != null)
+		for(int i = 0; i < resultado.length;i++){
+			System.out.println(resultado[i]);
+		}
 		return "home";
 	}
 
@@ -304,9 +318,9 @@ public class HomeController {
 			@RequestParam("grado") String param1,
 			@RequestParam("itirenario") String param2,
 			@RequestParam("asig1") String param3,
-			@RequestParam("asig1-2") String param4,
+			@RequestParam("asig12") String param4,
 			@RequestParam("asig2") String param5,
-			@RequestParam("asig2-1") String param6,
+			@RequestParam("asig22") String param6,
 			@RequestParam("op1") String param7,
 			@RequestParam("op2") String param8,
 			@RequestParam("op3") String param9,
@@ -314,17 +328,36 @@ public class HomeController {
 			@RequestParam("op5") String param11,
 			HttpServletRequest request, HttpServletResponse response, 
 			Model model, HttpSession session) throws IOException {
-			
-		double respuestas[] = new double[numRespuestas];
-		String[] resp = {param1,param2,param3,param4,param5,param6,param7,param8,param9,param10,param11};
+	
+		double respuestas1[] = new double[numRespuestas];
+		double respuestas2[] = new double[numRespuestas];
+		double respuestas3[] = new double[numRespuestas];
+		double respuestas4[] = new double[numRespuestas];
+		double respuestas5[] = new double[numRespuestas];
+		
+		String[] resp1 = {param1,param2,param3,param4,param5,param6,param7};
+		String[] resp2 = {param1,param2,param3,param4,param5,param6,param8};
+		String[] resp3 = {param1,param2,param3,param4,param5,param6,param9};
+		String[] resp4 = {param1,param2,param3,param4,param5,param6,param10};
+		String[] resp5 = {param1,param2,param3,param4,param5,param6,param11};
+		
 		for(int i = 0; i < numRespuestas;i++){
-			respuestas[i] = Double.parseDouble(resp[i]);
+			respuestas1[i] = Double.parseDouble(resp1[i]);
+			respuestas2[i] = Double.parseDouble(resp2[i]);
+			respuestas3[i] = Double.parseDouble(resp3[i]);
+			respuestas4[i] = Double.parseDouble(resp4[i]);
+			respuestas5[i] = Double.parseDouble(resp5[i]);
 		}
-		Formulario form = new Formulario (respuestas,numRespuestas);
-		File f = new File("datos.txt");
-		FileWriter w = new FileWriter(f,true);
-		w.write(form.toARPFline() + "\r\n");
-		w.close();
+		
+		Formulario form1 = new Formulario (respuestas1,numRespuestas);
+		Formulario form2 = new Formulario (respuestas2,numRespuestas);
+		Formulario form3 = new Formulario (respuestas3,numRespuestas);
+		Formulario form4 = new Formulario (respuestas4,numRespuestas);
+		Formulario form5 = new Formulario (respuestas5,numRespuestas);
+		
+		Formulario f[] = {form1,form2,form3,form4,form5};
+		escribirEnFichero(f);
+		
 		return "home";
 	}
 	
@@ -334,13 +367,46 @@ public class HomeController {
 		return "danostuopinion";
 	}
 	
+
+	
+	/**************************** FUNCIONES AUXILIARES ******************************/
 	
 	
+	public void escribirEnFichero(Formulario f[]){
+		try {
+			for(int i = 0; i < numFormularios;i++){
+				File file;
+				FileWriter w;
+				file = new File("datos.txt");
+				w = new FileWriter(file,true);
+				System.out.println(f[i].toARPFline());
+				w.write(f[i].toARPFline() + "\r\n");
+				w.close();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
-	
-	
-	
-	
+	/**
+	 * esta funcion es para leer el archivo de texto que contiene la información para el recomendador
+	 * archivo: datos.txt
+	 * @return
+	 */
+	private BufferedReader leerArchivo(){
+		BufferedReader entrada = null;
+		try {
+			entrada =new BufferedReader(new FileReader("datos.txt"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return entrada;
+	}
 	
 	
 	

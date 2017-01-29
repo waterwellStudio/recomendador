@@ -3,23 +3,28 @@ package es.fdi.iw.model;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 import weka.classifiers.trees.J48;
 import weka.core.Instance;
 import weka.core.Instances;
 
 /**
- * clase utilizada para gestionar la entrada y salida de datos a 
- * el arbol de decision
+ * clase utilizada para gestionar la entrada y salida de datos  
+ * del arbol de decision
  * @author Jose Manuel Perez Zamorano
  *
  */
-
 public class DecisionTree {
-	J48 tree;
+	
+	private J48 tree;
 	
 	public DecisionTree(){
-		J48 j48 = new J48();
-		j48.setUnpruned(true); 
+		tree = new J48();
+		tree.setUnpruned(true); 
 	}
 	
 	/**
@@ -29,8 +34,8 @@ public class DecisionTree {
 	 * @param reader
 	 */
 	public DecisionTree(BufferedReader reader){
-		J48 j48 = new J48();
-		j48.setUnpruned(true); 
+		tree = new J48();
+		tree.setUnpruned(true); 
 		Instances in=null;
 		try {
 			in = new Instances(reader);
@@ -60,11 +65,11 @@ public class DecisionTree {
 	}
 	
 	/**
-	 * funcion que devuelve la clasificación de una instancia
+	 * 
 	 * @param in
 	 * @return
 	 */
-	public double clasificationForInsance(Instance in){
+	public double clasifyInsance(Instance in){
 		try {
 			return tree.classifyInstance(in);
 		} catch (Exception e) {
@@ -117,6 +122,24 @@ public class DecisionTree {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	return code;
+		return code;
+	}
+	
+	/**
+	 * funcion que devuelve el arbol de recomendación
+	 * en forma de codigo
+	 * @return
+	 */
+	public String tocode(){
+		try {
+			return tree.toSource("tree");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
+
+
+

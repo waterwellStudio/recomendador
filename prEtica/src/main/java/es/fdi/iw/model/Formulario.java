@@ -12,14 +12,14 @@ import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
 
-@Entity
+/**
+ * 
+ * @author Jose Manuel Perez Zamorano
+ *
+ */
 public class Formulario {
-	@Id
-	@GeneratedValue
-	private long id;
-	@Column
-	private double[] resultados;
 	
+	private double[] resultados;
 	private int numAtributos;
 	
 	public Formulario(double respuestas[], int numRespuestas){
@@ -29,25 +29,30 @@ public class Formulario {
 	
 	
 	//esta clase la terminamos cuando tengamos claro el número de atributos y sus valores
-	public Instance toInstance(BufferedReader b, int missing) throws IOException{
-		Instances dataset = new Instances(b);
-		Instance ret = new DenseInstance(numAtributos);
-		ret.setDataset(dataset);
-		if(missing>=0){
-			ret.setMissing(missing);
+	public Instance toInstance(BufferedReader b) {
+		Instances dataset = null;
+		try {
+			dataset = new Instances(b);
+			dataset.setClassIndex(dataset.numAttributes()-1);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		//ejemplo de funcionamiento
-		//ret.setValue(indexAtributo, valor);
-		//ret.setValue(0,2.3);
+		Instance ret = new DenseInstance(numAtributos+1);
+		ret.setDataset(dataset);
+		for(int i = 0; i < numAtributos;i++){
+			ret.setValue(i, resultados[i]);
+		}
+		ret.setMissing(numAtributos);
 		return ret;
 	}
 	
 	public String toARPFline(){
 		String ret = "";
 		ret += resultados[0];
-		for(int i = 1; i < numAtributos;i++){
+		for(int i = 1; i < numAtributos-1;i++){
 			ret += "," + resultados[i] ;
 		}
+		ret +=  "," + ((int) resultados[numAtributos-1]);
 		return ret;
 	}
 }

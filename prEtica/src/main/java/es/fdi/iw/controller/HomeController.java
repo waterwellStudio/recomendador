@@ -1,6 +1,8 @@
 package es.fdi.iw.controller;
 
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,6 +11,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -31,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import es.fdi.iw.model.DecisionTree;
 import es.fdi.iw.model.Formulario;
 import es.fdi.iw.model.User;
+import es.fdi.iw.model.Util;
 import weka.classifiers.trees.J48;
 import weka.core.Instance;
 
@@ -49,7 +54,6 @@ public class HomeController {
 	
 	private static final int numRespuestas = 7;
 	private static final int numPreguntas = 6;
-	public static final int numFormularios = 5;
 	
 	/**************************** LOGIN Y REGISTRO ******************************/
 
@@ -258,21 +262,21 @@ public class HomeController {
 			HttpServletRequest request, HttpServletResponse response, 
 			Model model, HttpSession session) {
 			
-		DecisionTree t = new DecisionTree(leerArchivo());
+		DecisionTree t = new DecisionTree(Util.leerArchivo());
 		double respuestas[] = new double[numPreguntas];
 		String[] resp = {param1,param2,param3,param4,param5,param6};
 		for(int i = 0; i < numPreguntas;i++){
 			respuestas[i] = Double.parseDouble(resp[i]);
 		}
 		Formulario form = new Formulario (respuestas,numPreguntas);
-		Instance in = form.toInstance(leerArchivo());
+		Instance in = form.toInstance(Util.leerArchivo());
 		double resultado[]=t.getDistribution(in);
-		//model.addAttribute("resultado", resultado);
-		if(resultado != null)
-		for(int i = 0; i < resultado.length;i++){
-			System.out.println(resultado[i]);
-		}
-		return "home";
+		List<String> resultados = Util.listarAsigRecomendadas(resultado);
+		
+		if(resultados != null)
+			model.addAttribute("resultado", resultados);
+		
+		return "resultados";
 	}
 
 	@RequestMapping(value = "/recomendador", method = RequestMethod.GET)
@@ -356,7 +360,7 @@ public class HomeController {
 		Formulario form5 = new Formulario (respuestas5,numRespuestas);
 		
 		Formulario f[] = {form1,form2,form3,form4,form5};
-		escribirEnFichero(f);
+		Util.escribirEnFichero(f);
 		
 		return "home";
 	}
@@ -366,58 +370,5 @@ public class HomeController {
 	public String danostuopinion(Model model) {
 		return "danostuopinion";
 	}
-	
-
-	
-	/**************************** FUNCIONES AUXILIARES ******************************/
-	
-	
-	public void escribirEnFichero(Formulario f[]){
-		try {
-			for(int i = 0; i < numFormularios;i++){
-				File file;
-				FileWriter w;
-				file = new File("datos.txt");
-				w = new FileWriter(file,true);
-				System.out.println(f[i].toARPFline());
-				w.write(f[i].toARPFline() + "\r\n");
-				w.close();
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * esta funcion es para leer el archivo de texto que contiene la información para el recomendador
-	 * archivo: datos.txt
-	 * @return
-	 */
-	private BufferedReader leerArchivo(){
-		BufferedReader entrada = null;
-		try {
-			entrada =new BufferedReader(new FileReader("datos.txt"));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return entrada;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

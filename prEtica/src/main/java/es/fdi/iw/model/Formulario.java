@@ -55,4 +55,7 @@ public class Formulario {
 		ret +=  "," + ((int) resultados[numAtributos-1]);
 		return ret;
 	}
+	
+	
+	
 }

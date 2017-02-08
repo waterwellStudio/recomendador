@@ -59,7 +59,7 @@ public class HomeController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
-		return "login";
+		return "home";
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -275,7 +275,8 @@ public class HomeController {
 		
 		if(resultados != null)
 			model.addAttribute("resultado", resultados);
-		
+		for(String s:resultados)
+			System.out.println(s);
 		return "resultados";
 	}
 

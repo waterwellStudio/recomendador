@@ -1,0 +1,49 @@
+/* ------ CAPA COMUN ------ */
+#capaMadre{}
+#panelSuperior{
+	height: 25%;
+}
+#panelDatos{
+	margin-left:25%;
+	margin-right:25%;
+}
+
+#izq{
+	float:left;
+	margin-left:10%;
+	margin-top:2%;
+}
+
+#drc{
+	float:right;
+	margin-right:10%;
+	margin-top:2%;
+}
+
+#centro{
+	text-align:center;
+	font-size: x-large;
+	font-weight: bold;
+}
+
+#textoCentro{
+	margin-left:20%;
+	margin-right:20%;
+}
+
+#cuerpoFormulario{
+	margin-left:25%;
+	margin-right:25%;
+}
+
+#optativas{
+	margin-left:15%;
+	margin-right:15%;
+}
+
+#log_button{
+	margin-left:25%;
+	margin-right:25%;
+	margin-top: 30px;
+    height:50px;
+}
